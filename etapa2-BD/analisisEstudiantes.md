@@ -625,3 +625,11 @@ Los campos `type="hidden"` no se ven, pero viajan en el POST. Cuando el usuario 
 5. En la pestana **SQL**, pega el contenido de `bd/script.sql` y ejecutalo. Esto crea la base de datos.
 6. Abre el navegador en: `http://localhost/etapa2-BD/index.php`
 7. Llena el formulario y presiona "Enviar". Deberia redirigirte a `resultado.php` mostrando la persona cargada.
+
+---
+
+## 9. Resumen visual de recorridos
+
+> Para la clase: ver el recorrido gráfico completo con diagramas y código por etapa en **[resumenRecorridos.md](resumenRecorridos.md)**.
+>
+> Incluye: mapa de páginas navegables vs librerías, diagrama de bloques, y las 3 navegaciones (Principal, Eliminación y Acceso incorrecto) con `sequenceDiagram` y bloques de código reales de cada archivo.
