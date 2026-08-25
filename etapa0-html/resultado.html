@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Resultado</title>
+    <style>
+        h1 {
+            font-family: Arial, sans-serif;
+            color: #2c3e50;
+            text-align: center;
+            font-size: 2.5em;
+            margin-bottom: 5px;
+        }
+        h2 {
+            font-family: Arial, sans-serif;
+            color: #7f8c8d;
+            text-align: center;
+            font-size: 1.2em;
+            font-weight: normal;
+            margin-top: 0;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Peliculas y Series</h1>
+    <h2>Datos completados en el formulario</h2>
+
+    <div id="resultado"></div>
+
+    <br>
+    <a href="index.html">Volver al formulario</a>
+
+    <script>
+        const params = new URLSearchParams(window.location.search);
+
+        const nombre = params.get('nombre') || 'No completado';
+        const temporadas = params.get('temporadas') || 'No completado';
+        const fechaEstreno = params.get('fechaEstreno') || 'No completado';
+        const tipo = params.get('tipo') || 'No seleccionado';
+        const generos = params.getAll('genero');
+        const opinion = params.get('opinion') || 'No completado';
+        const plataforma = params.get('plataforma') || 'No seleccionada';
+
+        const generosTexto = generos.length > 0 ? generos.join(', ') : 'Ninguno seleccionado';
+
+        document.getElementById('resultado').innerHTML =
+            '<p><strong>Nombre:</strong> ' + nombre + '</p>' +
+            '<p><strong>Temporadas:</strong> ' + temporadas + '</p>' +
+            '<p><strong>Fecha de estreno:</strong> ' + fechaEstreno + '</p>' +
+            '<p><strong>Tipo:</strong> ' + tipo + '</p>' +
+            '<p><strong>Generos:</strong> ' + generosTexto + '</p>' +
+            '<p><strong>Opinion:</strong> ' + opinion + '</p>' +
+            '<p><strong>Plataforma:</strong> ' + plataforma + '</p>';
+    </script>
+
+</body>
+</html>

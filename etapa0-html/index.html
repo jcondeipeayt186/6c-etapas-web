@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Peliculas y Series</title>
+    <style>
+        h1 {
+            font-family: Arial, sans-serif;
+            color: #2c3e50;
+            text-align: center;
+            font-size: 2.5em;
+            margin-bottom: 5px;
+        }
+        h2 {
+            font-family: Arial, sans-serif;
+            color: #7f8c8d;
+            text-align: center;
+            font-size: 1.2em;
+            font-weight: normal;
+            margin-top: 0;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Peliculas y Series</h1>
+    <h2>en esta web puedes cargar datos de las peliculas y series que te gustan</h2>
+
+    <form id="formulario" action="resultado.html" method="get">
+
+        <!-- Texto -->
+        <label for="nombre">Nombre de la pelicula/serie:</label><br>
+        <input type="text" id="nombre" name="nombre" required placeholder="Ej: Breaking Bad"><br><br>
+
+        <!-- Texto -->
+        <label for="email">Correo electrónico:</label><br>
+        <input type="email" id="email" name="email" required placeholder="Ej: user@example.com"><br><br>
+
+        <!-- Number -->
+        <label for="temporadas">Cantidad de temporadas:</label><br>
+        <input type="number" id="temporadas" name="temporadas" min="1" max="50"><br><br>
+
+        <!-- Date -->
+        <label for="fechaEstreno">Fecha de estreno:</label><br>
+        <input type="date" id="fechaEstreno" name="fechaEstreno"><br><br>
+
+        <!-- Radio buttons -->
+        <label>Tipo:</label><br>
+        <input type="radio" id="pelicula" name="tipo" value="Pelicula">
+        <label for="pelicula">Pelicula</label>
+        <input type="radio" id="serie" name="tipo" value="Serie">
+        <label for="serie">Serie</label><br><br>
+
+        <!-- Checkbox -->
+        <label>Generos:</label><br>
+        <input type="checkbox" id="accion" name="genero" value="Accion">
+        <label for="accion">Accion</label>
+        <input type="checkbox" id="comedia" name="genero" value="Comedia">
+        <label for="comedia">Comedia</label>
+        <input type="checkbox" id="drama" name="genero" value="Drama">
+        <label for="drama">Drama</label>
+        <input type="checkbox" id="scifi" name="genero" value="Ciencia Ficcion">
+        <label for="scifi">Ciencia Ficcion</label><br><br>
+
+        <!-- Textarea -->
+        <label for="opinion">Tu opinion:</label><br>
+        <textarea id="opinion" name="opinion" rows="4" cols="40" placeholder="Escribe tu opinion..."></textarea><br><br>
+
+        <!-- Select -->
+        <label for="plataforma">Plataforma:</label><br>
+        <select id="plataforma" name="plataforma">
+            <option value="">-- Seleccionar --</option>
+            <option value="Netflix">Netflix</option>
+            <option value="Amazon Prime">Amazon Prime</option>
+            <option value="Disney+">Disney+</option>
+            <option value="HBO Max">HBO Max</option>
+            <option value="Otros">Otros</option>
+        </select><br><br>
+
+        <input type="submit" value="Enviar">
+
+    </form>
+
+</body>
+</html>
