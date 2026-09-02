@@ -1,8 +1,3 @@
-<?php include
-
-include 'librerias/funcionesHTML.php';
-?>
-
 <!DOCTYPE html>
 <!--
     ETAPA 2 - FORMULARIO CON BASE DE DATOS
@@ -28,7 +23,7 @@ include 'librerias/funcionesHTML.php';
                     </div>
                     <div class="card-body">
                         <div class="row">
-                            <div class="col-md-10 mb-3">
+                            <div class="col-md-12 mb-3">
                                 <div class="d-grid">
                                         <a href="resultado.php" class="btn btn-secondary">Ver Personas</a>
                                  </div>
@@ -110,10 +105,5 @@ include 'librerias/funcionesHTML.php';
         </div>
     </div>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-
-
-     <?php
-        piePagina();
-    ?>
 </body>
 </html>

@@ -8,12 +8,13 @@
 
 ### 1.1 ¿Qué ve el usuario y qué no?
 
-| Tipo | Archivos | ¿Se abre en el navegador? | ¿Tiene HTML? | Rol |
-|------|----------|---------------------------|--------------|-----|
-| **Páginas navegables** | `index.php`, `resultado.php` | Sí | Sí (HTML + PHP) | Lo que el usuario ve y navega |
-| **Librerías (no navegables)** | `procesando.php`, `bd/gestionBaseDatos.php` | No (trabajan detrás) | No, solo PHP | Procesan y hablan con la BD |
-| **Recurso** | `bd/script.sql` | No | SQL | Plano para crear BD/tabla (se ejecuta 1 vez) |
-| **Base de datos** | MySQL `contactos2` / tabla `personas` | No | — | Guarda los datos de forma permanente |
+
+| Tipo                           | Archivos                                    | ¿Se abre en el navegador? | ¿Tiene HTML?    | Rol                                          |
+| -------------------------------- | --------------------------------------------- | ---------------------------- | ------------------ | ---------------------------------------------- |
+| **Páginas navegables**        | `index.php`, `resultado.php`                | Sí                        | Sí (HTML + PHP) | Lo que el usuario ve y navega                |
+| **Librerías (no navegables)** | `procesando.php`, `bd/gestionBaseDatos.php` | No (trabajan detrás)      | No, solo PHP     | Procesan y hablan con la BD                  |
+| **Recurso**                    | `bd/script.sql`                             | No                         | SQL              | Plano para crear BD/tabla (se ejecuta 1 vez) |
+| **Base de datos**              | MySQL`contactos2` / tabla `personas`        | No                         | —               | Guarda los datos de forma permanente         |
 
 > **Regla de oro:** el usuario solo navega entre `index.php` ↔ `resultado.php`. Nunca debería "aterrizar" en `procesando.php`.
 
@@ -472,16 +473,17 @@ flowchart TB
 
 ## 6. Resumen de comunicaciones (para memorizar)
 
-| ¿Quién llama a quién? | Función / mecanismo | ¿Para qué? |
-|------------------------|---------------------|------------|
-| `index.php` → `procesando.php` | `<form action="procesando.php" method="POST">` | Enviar datos del formulario |
-| `resultado.php` → `procesando.php` | `<form action="procesando.php">` con `hidden accion=eliminar` | Pedir borrado de una fila |
-| `procesando.php` → `gestionBaseDatos.php` | `require_once` + `obtenerConexion()` | Traer funciones y conectar PDO |
-| `procesando.php` → `gestionBaseDatos.php` | `insertarPersona($conexion, $datos)` | INSERT preparado |
-| `procesando.php` → `gestionBaseDatos.php` | `eliminarPersona($conexion, $id)` | DELETE preparado |
-| `resultado.php` → `gestionBaseDatos.php` | `obtenerTodasLasPersonas($conexion)` | SELECT de todo |
-| `gestionBaseDatos.php` → MySQL | `new PDO(...)` + `prepare()` + `execute()` | Hablar con `contactos2.personas` |
-| `procesando.php` → navegador | `header("Location: ...") + exit` | Redirigir (PRG pattern) |
+
+| ¿Quién llama a quién?                   | Función / mecanismo                                          | ¿Para qué?                    |
+| -------------------------------------------- | --------------------------------------------------------------- | --------------------------------- |
+| `index.php` → `procesando.php`            | `<form action="procesando.php" method="POST">`                | Enviar datos del formulario     |
+| `resultado.php` → `procesando.php`        | `<form action="procesando.php">` con `hidden accion=eliminar` | Pedir borrado de una fila       |
+| `procesando.php` → `gestionBaseDatos.php` | `require_once` + `obtenerConexion()`                          | Traer funciones y conectar PDO  |
+| `procesando.php` → `gestionBaseDatos.php` | `insertarPersona($conexion, $datos)`                          | INSERT preparado                |
+| `procesando.php` → `gestionBaseDatos.php` | `eliminarPersona($conexion, $id)`                             | DELETE preparado                |
+| `resultado.php` → `gestionBaseDatos.php`  | `obtenerTodasLasPersonas($conexion)`                          | SELECT de todo                  |
+| `gestionBaseDatos.php` → MySQL            | `new PDO(...)` + `prepare()` + `execute()`                    | Hablar con`contactos2.personas` |
+| `procesando.php` → navegador              | `header("Location: ...") + exit`                              | Redirigir (PRG pattern)         |
 
 > **Patrón PRG (Post/Redirect/Get):** después de un POST que modifica la BD, nunca muestres HTML directo. Redirige con `header()` a una página GET (`resultado.php`). Así evitas re-envíos al recargar.
 
@@ -551,4 +553,3 @@ function obtenerConexion() {    // Datos de conexion a MySQL - CAMBIAR segun tu 
 5. ¿Qué ven en el navegador si abren `procesando.php` sin POST? ¿Y con POST sin datos?
 
 > Ver también: `analisisEstudiantes.md` (guía completa con explicación línea por línea).
-
