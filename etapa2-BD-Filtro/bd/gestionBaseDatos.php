@@ -32,8 +32,13 @@
 function obtenerConexion() {
     // Datos de conexion a MySQL - CAMBIAR segun tu instalacion
     $host = "localhost";       // Servidor (generalmente localhost)
+<<<<<<< HEAD
     $usuario = "jconde";         // Usuario de MySQL
     $contrasena = "jc2021";          // Contrasena de MySQL (vacio por defecto en XAMPP)
+=======
+    $usuario = "root";         // Usuario de MySQL
+    $contrasena = "";          // Contrasena de MySQL (vacio por defecto en XAMPP)
+>>>>>>> a68cc22f2ea3c2f38ffc8aa3536abf70c9ef9211
     $baseDatos = "contactos2";  // Nombre de la base de datos
 
     try {
