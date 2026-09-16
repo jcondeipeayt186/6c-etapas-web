@@ -1,0 +1,7 @@
+.env
+vendor/
+*.log
+!lib/utils/mail.log.example
+lib/utils/mail.log
+.DS_Store
+Thumbs.db
