@@ -1,0 +1,16 @@
+DB_HOST=localhost
+DB_NAME=contactos5
+DB_USER=root
+DB_PASS=
+DB_CHARSET=utf8mb4
+DB_PORT=3306
+
+MAIL_HOST=smtp.gmail.com
+MAIL_PORT=587
+MAIL_USERNAME=julianconde.ipeayt186@gmail.com
+MAIL_PASSWORD=xxtvamieqsaqosan
+MAIL_ENCRYPTION=tls
+MAIL_FROM=noreply@tuapp.local
+MAIL_FROM_NAME="Aplicacion Web - Casta 186"
+MAIL_DEBUG=true
+MAIL_DRY_RUN=false

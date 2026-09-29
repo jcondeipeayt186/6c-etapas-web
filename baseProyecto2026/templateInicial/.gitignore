@@ -1,0 +1,8 @@
+# El .env tiene contraseñas: no se sube al repositorio
+.env
+
+# Archivos que sube el usuario (avatares y currículums)
+files/avatars/*
+files/cv/*
+!files/avatars/.gitkeep
+!files/cv/.gitkeep
