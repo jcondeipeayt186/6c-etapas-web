@@ -23,6 +23,13 @@ require_once '../../lib/bd/gestionBaseDatos.php';
 require_once '../../lib/html/funcionesHTML.php';
 require_once '../../lib/utils/varios.php';
 
+// 1.b Aviso: al editar necesitamos obtenerModuloPorId(). Si el alumno todavía
+// no la escribió, mostramos el mensaje de "plantilla sin terminar".
+if (isset($_GET['id']) && !function_exists('obtenerModuloPorId')) {
+    require_once 'avisoPlantilla.php';
+    mostrarAvisoPlantilla('obtenerModuloPorId');
+}
+
 // 2. Conexión
 $conexion = obtenerConexion();
 

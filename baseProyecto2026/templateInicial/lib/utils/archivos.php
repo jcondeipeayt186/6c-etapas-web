@@ -96,7 +96,20 @@ function guardarArchivoSubido($archivo, $subcarpeta, $prefijo, $extensiones = ar
     // Creamos la carpeta destino si todavía no existe
     $rutaCarpeta = carpetaArchivos() . '/' . $subcarpeta;
     if (!is_dir($rutaCarpeta)) {
-        mkdir($rutaCarpeta, 0777, true);
+        mkdir($rutaCarpeta, 0775, true);
+    }
+
+    // IMPORTANTE: el archivo lo guarda el SERVIDOR WEB, no el usuario.
+    // Apache, por ejemplo, corre como el usuario www-data, así que la carpeta
+    // tiene que darle permiso de escritura. Si no, move_uploaded_file()
+    // falla con "Permission denied" y no se guarda ni la foto ni el CV.
+    // Con is_writable() lo detectamos antes y podemos explicar qué hacer.
+    if (!is_writable($rutaCarpeta)) {
+        $ultimoErrorArchivo = 'El servidor no tiene permiso de escritura en la carpeta '
+            . $rutaCarpeta
+            . '. En Linux hay que darle permiso al usuario del servidor (www-data): sudo chown -R www-data:www-data '
+            . dirname($rutaCarpeta);
+        return null;
     }
 
     // Armamos un nombre nuevo para que dos archivos con el mismo nombre
@@ -106,7 +119,8 @@ function guardarArchivoSubido($archivo, $subcarpeta, $prefijo, $extensiones = ar
 
     // move_uploaded_file(): mueve el archivo temporal a nuestra carpeta
     if (!move_uploaded_file($archivo['tmp_name'], $rutaCompleta)) {
-        $ultimoErrorArchivo = 'No se pudo guardar el archivo en el servidor.';
+        $ultimoErrorArchivo = 'No se pudo guardar el archivo en el servidor. Revisá los permisos de la carpeta '
+            . $rutaCarpeta . '.';
         return null;
     }
 

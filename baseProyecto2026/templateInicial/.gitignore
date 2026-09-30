@@ -6,3 +6,7 @@ files/avatars/*
 files/cv/*
 !files/avatars/.gitkeep
 !files/cv/.gitkeep
+
+# Log de los mails: se genera solo, no va al repositorio
+mail.log
+lib/utils/mail.log

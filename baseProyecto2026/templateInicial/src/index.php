@@ -6,6 +6,7 @@
     Muestra:
     1. Dos tarjetas con las estadísticas que salen de MySQL (COUNT(*))
     2. Botones para ir a cada módulo: personas y ciudades
+    3. Un link de ayuda: cómo agregar un módulo nuevo
 
     ¿Navegable? Sí. Es una página con HTML que el usuario ve en el navegador.
     No tiene formularios ni botones que guarden datos: solo muestra y
@@ -114,6 +115,19 @@ $cantidadCiudades = contarCiudades($conexion);
                                 para poder asignarla a las personas.
                             </div>
                         <?php endif; ?>
+
+                        <!--
+                            Link de ayuda para extender el proyecto.
+                            Apunta a template/avisoPlantilla.php, que se detecta
+                            como acceso directo y muestra el mismo tutorial:
+                            el SQL de la tabla, el modelo a escribir, los
+                            archivos a renombrar y la relación con ciudades.
+                        -->
+                        <div class="text-center mt-4 pt-3 border-top">
+                            <a href="template/avisoPlantilla.php" class="link-secondary">
+                                ¿Cómo agrego un nuevo módulo?
+                            </a>
+                        </div>
 
                     </div>
                 </div>

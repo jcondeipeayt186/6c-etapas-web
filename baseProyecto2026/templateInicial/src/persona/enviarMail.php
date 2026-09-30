@@ -50,9 +50,19 @@ if (!$persona) {
 // Enviamos el mail
 $enviado = enviarMailAPersona($persona, $para, $asunto, $mensaje);
 
+// El error del log es aparte: el mail puede haberse enviado bien y
+// solamente no haberse podido anotar (por permisos, por ejemplo)
+$errorDelLog = obtenerUltimoErrorLog();
+$detalle     = $errorDelLog;
+
 if ($enviado) {
-    header("Location: viewPersona.php?mail=ok");
+    header("Location: viewPersona.php?mail=ok&log=" . urlencode($errorDelLog));
 } else {
-    header("Location: viewPersona.php?mail=error&detalle=" . urlencode(obtenerUltimoErrorMail()));
+    if ($errorDelLog !== '') {
+        $detalle = obtenerUltimoErrorMail() . ' | ' . $errorDelLog;
+    } else {
+        $detalle = obtenerUltimoErrorMail();
+    }
+    header("Location: viewPersona.php?mail=error&detalle=" . urlencode($detalle));
 }
 exit;

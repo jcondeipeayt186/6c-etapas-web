@@ -26,6 +26,13 @@ require_once '../../lib/bd/gestionBaseDatos.php';
 require_once '../../lib/html/funcionesHTML.php';
 require_once '../../lib/utils/varios.php';
 
+// 1.b Aviso: si la función del módulo todavía no existe, mostramos el mensaje
+// de "plantilla sin terminar" en vez de un error 500 de PHP.
+if (!function_exists('obtenerTodosLosModulos')) {
+    require_once 'avisoPlantilla.php';
+    mostrarAvisoPlantilla('obtenerTodosLosModulos');
+}
+
 // 2. Conectamos con la base de datos
 $conexion = obtenerConexion();
 

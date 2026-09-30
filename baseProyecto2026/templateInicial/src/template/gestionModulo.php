@@ -20,6 +20,20 @@
 // 1. Librerías
 require_once '../../lib/bd/gestionBaseDatos.php';
 
+// 1.b Aviso: esta plantilla usa tres funciones del módulo. Si todavía no
+// existen, mostramos el mensaje de "plantilla sin terminar" en vez de un error.
+$funcionesDelModulo = array('crearModulo', 'actualizarModulo', 'eliminarModulo');
+$funcionesFaltantes = array();
+foreach ($funcionesDelModulo as $nombreFuncion) {
+    if (!function_exists($nombreFuncion)) {
+        $funcionesFaltantes[] = $nombreFuncion;
+    }
+}
+if (!empty($funcionesFaltantes)) {
+    require_once 'avisoPlantilla.php';
+    mostrarAvisoPlantilla(implode(', ', $funcionesFaltantes));
+}
+
 // 2. Conexión
 $conexion = obtenerConexion();
 

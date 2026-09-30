@@ -83,7 +83,8 @@ borrarArchivo($persona['cv_path']);
 
 ## 3. `mail.php`
 
-Envía correos con la función `mail()` de PHP (no hace falta instalar nada).
+Envía correos hablando **SMTP directamente** (con `fsockopen()`), sin instalar
+nada en el servidor y sin depender de `mail()`.
 
 ```php
 require_once '../../lib/utils/mail.php';
@@ -91,7 +92,10 @@ require_once '../../lib/utils/mail.php';
 $ok = enviarMail('destino@ejemplo.com', 'Asunto', '<p>Hola, mensaje</p>');
 
 if (!$ok) {
-    echo obtenerUltimoErrorMail();
+    echo obtenerUltimoErrorMail();     // el error del envío
+}
+if (obtenerUltimoErrorLog() !== '') {
+    echo obtenerUltimoErrorLog();      // el mail salió, pero no se pudo anotar
 }
 ```
 
@@ -101,16 +105,67 @@ Y una función ya armada para mandar un mail a una persona de la base:
 enviarMailAPersona($persona, 'destino@ejemplo.com', 'Asunto', 'Mensaje con acentos');
 ```
 
+### ¿Por qué no `mail()`?
+
+`mail()` no habla SMTP: le entrega el mail a `/usr/sbin/sendmail`, que en
+muchos servidores no está instalado. El síntoma es el siguiente:
+
+```
+Warning: mail(): sh: 1: /usr/sbin/sendmail: not found
+```
+
+O sea: los datos del `.env` están bien, pero el mail no sale. Esta librería
+evita ese problema conectándose directo al servidor de correo.
+
+### El diálogo SMTP
+
+`enviarMailSmtp()` hace, en orden, los pasos del protocolo (cada comando
+espera la respuesta del servidor, que empieza con un número):
+
+| Paso | Se manda | Respuesta buena |
+|---|---|---|
+| 1 | (saludo del servidor) | `220` |
+| 2 | `EHLO localhost` | `250` |
+| 3 | `STARTTLS` y activate el cifrado | `220` |
+| 4 | `EHLO localhost` (de nuevo) | `250` |
+| 5 | `AUTH LOGIN` + usuario y clave en base64 | `235` |
+| 6 | `MAIL FROM:<remitente>` | `250` |
+| 7 | `RCPT TO:<destinatario>` | `250` |
+| 8 | `DATA` + el mensaje + `.` | `250` |
+| 9 | `QUIT` | — |
+
+Los errores típicos:
+
+| En el log | Qué significa |
+|---|---|
+| `535` en `AUTH LOGIN` | usuario o contraseña incorrectos. En Gmail hace falta una **contraseña de aplicación**, no la contraseña normal |
+| `SMTP fsockopen falló` | no hay salida a internet o el puerto está bloqueado. Probá `MAIL_PORT=465` con `MAIL_ENCRYPTION=ssl` |
+| `no ofrece STARTTLS` | probá con `ssl` en el puerto 465 |
+| `no acepta el destinario` | el email escrito no existe o no lo acepta el servidor |
+
 ### Configuración en el `.env`
 
 | Variable | Qué es |
 |---|---|
 | `MAIL_HOST` | Servidor de correo (Gmail: `smtp.gmail.com`, Outlook: `smtp.office365.com`) |
-| `MAIL_PORT` | Puerto (587) |
-| `MAIL_USERNAME` / `MAIL_PASSWORD` | Cuenta y contraseña de aplicación |
-| `MAIL_FROM` / `MAIL_FROM_NAME` | Remitente |
-| `MAIL_DEBUG` | `true` escribe más detalles en `mail.log` |
-| `MAIL_DRY_RUN` | `true` **NO envía**: solo anota el mail en `mail.log` |
+| `MAIL_PORT` | Puerto (587 con `tls`, 465 con `ssl`) |
+| `MAIL_ENCRYPTION` | `tls` (puerto 587), `ssl` (puerto 465) o `none` |
+| `MAIL_USERNAME` / `MAIL_PASSWORD` | Cuenta y **contraseña de aplicación** |
+| `MAIL_FROM` / `MAIL_FROM_NAME` | Remitente (en Gmail, la misma cuenta que `MAIL_USERNAME`) |
+| `MAIL_DEBUG` | `true` escribe toda la traza SMTP en el log |
+| `MAIL_DRY_RUN` | `true` **NO envía**: solo anota el mail en el log |
+| `MAIL_LOG` | Dónde queda ese log (por defecto `lib/utils/mail.log`) |
 
 > Para probar sin configurar correo: dejá `MAIL_DRY_RUN=true`.
-> Cada intento de envío queda anotado en `lib/utils/mail.log`.
+> Cada intento de envío queda anotado en `lib/utils/mail.log` y se ve con:
+> ```bash
+> tail -f lib/utils/mail.log
+> ```
+>
+> **Ojo con los permisos:** el log lo escribe el servidor web, no el usuario de
+> la terminal. Con Apache (que corre como `www-data`) hay que hacer una vez:
+> ```bash
+> sudo chown www-data:www-data lib/utils/mail.log
+> ```
+> Si no, `escribirLogMail()` no puede escribir y `obtenerUltimoErrorLog()`
+> devuelve el comando exacto que hay que ejecutar.

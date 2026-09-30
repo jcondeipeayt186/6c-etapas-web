@@ -55,6 +55,14 @@ $personas = obtenerTodasLasPersonas($conexion, $busqueda);
                             <div class="alert alert-success">El mail se envió correctamente.</div>
                         <?php endif; ?>
 
+                        <!--
+                            Aviso de que el mail se envió, pero no se pudo anotar en el
+                            archivo de log (típico tema de permisos con Apache)
+                        -->
+                        <?php if (isset($_GET['log']) && trim($_GET['log']) !== ''): ?>
+                            <div class="alert alert-warning"><?php echo htmlspecialchars($_GET['log']); ?></div>
+                        <?php endif; ?>
+
                         <!-- Aviso de que el mail NO se pudo enviar -->
                         <?php if (isset($_GET['mail']) && $_GET['mail'] === 'error'): ?>
                             <div class="alert alert-danger">

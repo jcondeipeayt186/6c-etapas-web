@@ -100,9 +100,14 @@ if (isset($_GET['id'])) {
                             - Sin id (alta):  accion=crear     -> se hace INSERT
                             - Con id (edición): accion=actualizar -> se hace UPDATE
                             enctype="multipart/form-data" es obligatorio para poder subir archivos
+
+                            El onsubmit llama a la función validarFormulario() de JavaScript,
+                            pero esa función SOLO existe cuando usamos el buscador de
+                            ciudades (el <datalist>). Por eso lo agregamos con un if:
+                            si no, el navegador daría error "validarFormulario no definida".
                         -->
                         <form action="gestionPersona.php" method="POST" enctype="multipart/form-data"
-                              onsubmit="return validarFormulario();">
+                              <?php if ($usarBuscador): ?>onsubmit="return validarFormulario();"<?php endif; ?>>
 
                             <!-- Campos ocultos: le dicen a gestionPersona.php qué hacer -->
                             <?php if ($esEdicion): ?>
